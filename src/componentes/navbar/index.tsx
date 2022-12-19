@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { ReactNode, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import SearchBar from "../search-bar/search-component";
 
 interface Links {
   navItem: string;
@@ -33,7 +34,7 @@ const NavLink = ({ to, children }: { to: any; children: ReactNode }) => (
   </Link>
 );
 
-export default function NavBar({ children }: { children: ReactNode }) {
+export default function NavBar({ children, showSearchBar}: { children: ReactNode, showSearchBar?: boolean }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
   const [login, setLogin] = useState<any>();
@@ -89,6 +90,7 @@ export default function NavBar({ children }: { children: ReactNode }) {
             </HStack>
           </HStack>
           <HStack spacing={8} alignItems={"center"}>
+            {showSearchBar ? <SearchBar/> : <></>}
             {!login ? (
               <>
                 <Button

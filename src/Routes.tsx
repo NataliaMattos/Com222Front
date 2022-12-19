@@ -65,7 +65,7 @@ export function Routess() {
 
       <Route path="/games/:console"
         element={
-          <NavBar>
+          <NavBar showSearchBar={true}>
             <Games />
           </NavBar>
        } />

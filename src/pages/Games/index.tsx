@@ -27,6 +27,7 @@ import { FormEvent, useContext, useEffect, useState } from "react";
 
 import { useLocation, useNavigate } from "react-router-dom";
 import { GameContext } from "../../contexts/game";
+import SearchBar from "../../componentes/search-bar/search-component"; 
 import axios from "../../services/axios";
 
 interface GameInterface {
@@ -49,7 +50,7 @@ export default function Games() {
   useEffect(() => {
     setIsLoading(false);
     axios
-      .get("http://localhost:3000/games/bem-avaliados", {
+      .get("https://backend-trabalho-com222.onrender.com/games/bem-avaliados", {
         params: { console: console },
       })
       .then((response) => {

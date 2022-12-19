@@ -46,11 +46,15 @@ function CreateGame() {
   const toast = useToast();
 
   const handleSubmit = (event: FormEvent) => {
+    const config = {
+      headers: { Authorization: `Bearer ${localStorage.getItem("logado")}` }
+    };
+    
     console.log(game);
     setIsWaiting(true);
     event.preventDefault();
     axios
-      .post("http://localhost:3000/game", {
+      .post("https://backend-trabalho-com222.onrender.com/game", {
         titulo: game.titulo,
         resumo: game.resumo,
         genero: game.genero,
@@ -58,6 +62,7 @@ function CreateGame() {
         console: game.console,
         imagem: game.imagem,
         avaliacao: game.avaliacao,
+        config: config
       })
       .then(() => {
         setRefresh(!refresh);

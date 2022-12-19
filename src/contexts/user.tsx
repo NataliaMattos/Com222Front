@@ -27,7 +27,7 @@ export function UserProvider({ children }: UserProviderProps) {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    axios.get("http://localhost:3000/users").then((response) => {
+    axios.get("https://backend-trabalho-com222.onrender.com/users").then((response) => {
       setUsers(response.data);
       setIsLoading(true);
     });
