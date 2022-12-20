@@ -36,7 +36,7 @@ function SearchBar() {
 
   useEffect(() => {
     axios
-      .get(`https://backend-trabalho-com222.onrender.com/user/games/console?console=${consoleType}`)
+      .get(`https://backend-trabalho-com222.onrender.com/games/console?console=${consoleType}`)
       .then((response) => {
         setItems(response.data);
 
@@ -81,7 +81,7 @@ function SearchBar() {
     } else {
       axios
         .get(
-          `https://backend-trabalho-com222.onrender.com/user/games/pesquisa/?${selectedItem.param}=${selectedItem.tituloPuro}`
+          `https://backend-trabalho-com222.onrender.com/games/pesquisa/?${selectedItem.param}=${selectedItem.tituloPuro}`
         )
         .then((response) => {
           setGamesFilter(response.data);

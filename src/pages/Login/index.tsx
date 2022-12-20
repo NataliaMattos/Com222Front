@@ -42,7 +42,7 @@ export default function Login() {
   const handleLoginSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      axios.post("https://backend-trabalho-com222.onrender.com/user/login", {
+      axios.post("https://backend-trabalho-com222.onrender.com/login", {
         email,
         password,
       }).then((response) => {

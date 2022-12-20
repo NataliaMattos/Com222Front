@@ -60,7 +60,7 @@ export default function Games() {
   function findTop3() {
     setIsLoading(false);
     axios
-      .get("https://backend-trabalho-com222.onrender.com/user/games/bem-avaliados", {
+      .get("https://backend-trabalho-com222.onrender.com/games/bem-avaliados", {
         params: { console: consoleType },
       })
       .then((response) => {
