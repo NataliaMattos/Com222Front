@@ -7,6 +7,7 @@ import Games from "./pages/Games";
 import CreateGame from "./pages/CreateGame";
 import CadastrarUsuario from "./pages/cadastrarUsuario";
 import { Box } from "@chakra-ui/react";
+import { GameProvider } from "./contexts/game";
 
 //FUNÇÃO QUE VERIFICA AS ROTAS PRIVADAS
 function RequireAuth({ children}: { children: JSX.Element}) {
@@ -34,10 +35,12 @@ export function Routess() {
       
       <Route path="/games" element={
         <Box overflowX={'hidden'}>
-        <NavBar >
-          <Main />
-        </NavBar>
-      </Box>
+          <GameProvider>
+            <NavBar >
+              <Main />
+            </NavBar>
+          </GameProvider>
+        </Box>
       } />
 
       <Route path="/login"
@@ -65,9 +68,11 @@ export function Routess() {
 
       <Route path="/games/:console"
         element={
-          <NavBar>
+          <GameProvider>
+          <NavBar showSearchBar={true}>
             <Games />
           </NavBar>
+          </GameProvider>
        } />
 
       <Route path="/games/:console/:id"

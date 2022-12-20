@@ -17,8 +17,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
-import { FormEvent, useContext, useState } from "react";
-import { GameContext } from "../../contexts/game";
+import { FormEvent, useState } from "react";
 
 interface GameInterface {
   titulo: string;
@@ -39,27 +38,39 @@ function CreateGame() {
     imagem: "",
   });
   const [isWaiting, setIsWaiting] = useState(false);
-  const { refresh, setRefresh } = useContext(GameContext);
 
   const toast = useToast();
 
   const handleSubmit = (event: FormEvent) => {
-    console.log(game);
     setIsWaiting(true);
     event.preventDefault();
+
     axios
-      .post("http://localhost:3000/games", {
-        titulo: game.titulo,
-        resumo: game.resumo,
-        genero: game.genero,
-        desenvolvedor: game.desenvolvedor,
-        console: game.console,
-        imagem: game.imagem,
-      },
-      { headers: {"Authorization" : `Bearer ${localStorage.getItem('logado')}`} }
+      .post(
+        "http://localhost:3000/games",
+        {
+          titulo: game.titulo,
+          resumo: game.resumo,
+          genero: game.genero,
+          desenvolvedor: game.desenvolvedor,
+          console: game.console,
+          imagem: game.imagem,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("logado")}`,
+          },
+        }
       )
-      .then(() => {
-        setRefresh(!refresh);
+      .then((response) => {
+        setGame({
+          titulo: "",
+          resumo: "",
+          genero: "",
+          desenvolvedor: "",
+          console: "",
+          imagem: "",
+        });
         toast({
           title: "Criação de jogo feito com sucesso.",
           description: "Criação de jogo feita com sucesso.",
@@ -69,9 +80,8 @@ function CreateGame() {
         });
       })
       .catch((error) => {
-        
         toast({
-          title: error.response.data.message,
+          title: "error",
           description: "Verifique as informações e tente novamente",
           status: "error",
           duration: 2000,

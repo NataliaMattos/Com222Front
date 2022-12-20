@@ -28,9 +28,8 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import axios from "axios";
-import React, { FormEvent, useContext, useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { GameContext } from "../../contexts/game";
 
 interface ReviewInterface {
   titulo: string;
@@ -46,7 +45,7 @@ export default function GameDetails() {
   });
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
-  const gameName = window.location.pathname.split("/")[3];
+  const gameName = window.location.pathname.split("/")[3].replaceAll('%20'," ");
   const gameUrl = useLocation().state?.gameUrl;
   const [isWaiting, setIsWaiting] = useState(false);
   const [refresh, setRefresh] = useState(false);
@@ -55,18 +54,10 @@ export default function GameDetails() {
   const logado = localStorage.getItem("logado");
 
   useEffect(() => {
-    console.log(gameName);
-    // if (!gameUrl) {
-    //   navigate("/games/"+window.location.pathname.split("/")[2]);
-    // }
-  }, []);
-
-  useEffect(() => {
     setIsLoading(false);
     axios
       .get("http://localhost:3000/review", { params: { titulo: gameName } })
       .then((response) => {
-        console.log(response.data);
         setReviews(response.data);
         setIsLoading(true);
       })

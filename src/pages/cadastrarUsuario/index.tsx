@@ -4,21 +4,14 @@ import {
   Flex,
   FormControl,
   FormLabel,
-  HStack,
   Input,
-  NumberDecrementStepper,
-  NumberIncrementStepper,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
   Spinner,
   Text,
   useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
-import { FormEvent, useContext, useState } from "react";
-import { UserContext } from "../../contexts/user";
-import { useLocation, useNavigate } from "react-router-dom";
+import { FormEvent,  useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface UserInterface {
   name: string;
@@ -59,7 +52,6 @@ function CadastrarUsuario() {
         navigate("/");
       })
       .catch((error: any) => {
-        console.log(error)
         toast({
           title: error.response.data.message,
           description: "Verifique as informações e tente novamente",
