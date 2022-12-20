@@ -18,6 +18,7 @@ import {
 import axios from "axios";
 import { FormEvent, useContext, useState } from "react";
 import { UserContext } from "../../contexts/user";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface UserInterface {
   name: string;
@@ -33,7 +34,7 @@ function CadastrarUsuario() {
     password: "",
   });
   const [isWaiting, setIsWaiting] = useState(false);
-  const { refresh, setRefresh} = useContext(UserContext);
+  const navigate = useNavigate();
 
   const toast = useToast();
 
@@ -46,8 +47,7 @@ function CadastrarUsuario() {
         email: user.email,
         password: user.password,
       })
-      .then(() => {
-        setRefresh(!refresh);
+      .then((response) => {
         toast({
           title: "Usuario criado com sucesso.",
           description: "Usuario criado com sucesso.",
@@ -55,10 +55,13 @@ function CadastrarUsuario() {
           duration: 1000,
           isClosable: true,
         });
+        localStorage.setItem("logado", response.data.token);     
+        navigate("/");
       })
-      .catch(() => {
+      .catch((error: any) => {
+        console.log(error)
         toast({
-          title: "Erro desconhecido",
+          title: error.response.data.message,
           description: "Verifique as informações e tente novamente",
           status: "error",
           duration: 2000,
@@ -123,7 +126,7 @@ function CadastrarUsuario() {
                   max-length="300"
                   borderColor="darkgrey"
                   border="2px"
-                  type="text"
+                  type="password"
                   value={user.password}
                   onChange={(event) => {
                     saveInputGenre(event?.target.value);

@@ -42,13 +42,21 @@ export default function Login() {
   const handleLoginSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      axios.post("/login", {
+      axios.post("http://localhost:3000/login", {
         email,
         password,
       }).then((response) => {
         localStorage.setItem("logado", response.data.token);     
         navigate("/");
-      });
+      }).catch((error) => {
+        toast({
+          title: error.response.data.message,
+          description: "Usuário ou senha incorretos",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      })
     } catch (err) {
       toast({
         title: "Erro",

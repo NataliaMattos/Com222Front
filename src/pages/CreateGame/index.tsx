@@ -27,7 +27,6 @@ interface GameInterface {
   desenvolvedor: string;
   console: string;
   imagem: string;
-  avaliacao: number;
 }
 
 function CreateGame() {
@@ -38,7 +37,6 @@ function CreateGame() {
     desenvolvedor: "",
     console: "",
     imagem: "",
-    avaliacao: 0,
   });
   const [isWaiting, setIsWaiting] = useState(false);
   const { refresh, setRefresh } = useContext(GameContext);
@@ -50,15 +48,16 @@ function CreateGame() {
     setIsWaiting(true);
     event.preventDefault();
     axios
-      .post("http://localhost:3000/game", {
+      .post("http://localhost:3000/games", {
         titulo: game.titulo,
         resumo: game.resumo,
         genero: game.genero,
         desenvolvedor: game.desenvolvedor,
         console: game.console,
         imagem: game.imagem,
-        avaliacao: game.avaliacao,
-      })
+      },
+      { headers: {"Authorization" : `Bearer ${localStorage.getItem('logado')}`} }
+      )
       .then(() => {
         setRefresh(!refresh);
         toast({
@@ -69,9 +68,10 @@ function CreateGame() {
           isClosable: true,
         });
       })
-      .catch(() => {
+      .catch((error) => {
+        
         toast({
-          title: "Erro desconhecido",
+          title: error.response.data.message,
           description: "Verifique as informações e tente novamente",
           status: "error",
           duration: 2000,
@@ -116,9 +116,6 @@ function CreateGame() {
     setGame({ ...game, console: value });
   };
 
-  const saveInputEvaluation = (value: any) => {
-    setGame({ ...game, avaliacao: value });
-  };
   return (
     <>
       <Text fontSize="3xl" fontWeight={"bold"} w="100%" ml={8} mt={5}>
@@ -201,25 +198,6 @@ function CreateGame() {
               </FormControl>
             </Box>
             <HStack>
-              <FormControl isRequired width={"30%"}>
-                <FormLabel htmlFor="name">Avaliação</FormLabel>
-                <NumberInput defaultValue={0} min={0} max={10}>
-                  <NumberInputField
-                    max-length="300"
-                    borderColor="darkgrey"
-                    border="2px"
-                    type="number"
-                    value={game.avaliacao}
-                    onChange={(event) => {
-                      saveInputEvaluation(event?.target.value);
-                    }}
-                  />
-                  <NumberInputStepper>
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
-                  </NumberInputStepper>
-                </NumberInput>
-              </FormControl>
               <FormControl as="fieldset" isRequired>
                 <FormLabel as="legend">Foto</FormLabel>
                 <Input
@@ -260,7 +238,6 @@ function CreateGame() {
                   desenvolvedor: "",
                   console: "",
                   imagem: "",
-                  avaliacao: 0,
                 });
               }}
             >

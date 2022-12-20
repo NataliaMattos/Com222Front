@@ -52,18 +52,21 @@ export default function GameDetails() {
   const [refresh, setRefresh] = useState(false);
   const [reviews, setReviews] = useState<ReviewInterface[]>([]);
   const toast = useToast();
+  const logado = localStorage.getItem("logado");
 
   useEffect(() => {
-    if (!gameUrl) {
-      navigate("/games/"+window.location.pathname.split("/")[2]);
-    }
+    console.log(gameName);
+    // if (!gameUrl) {
+    //   navigate("/games/"+window.location.pathname.split("/")[2]);
+    // }
   }, []);
 
   useEffect(() => {
     setIsLoading(false);
     axios
-      .get("http://localhost:3000/reviews", { params: { titulo: gameName } })
+      .get("http://localhost:3000/review", { params: { titulo: gameName } })
       .then((response) => {
+        console.log(response.data);
         setReviews(response.data);
         setIsLoading(true);
       })
@@ -76,11 +79,19 @@ export default function GameDetails() {
     setIsWaiting(true);
     event.preventDefault();
     axios
-      .post("http://localhost:3000/review", {
-        titulo: gameName,
-        nota: review.nota,
-        texto: review.texto,
-      })
+      .post(
+        "http://localhost:3000/review",
+        {
+          titulo: gameName,
+          nota: review.nota,
+          texto: review.texto,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("logado")}`,
+          },
+        }
+      )
       .then(() => {
         setRefresh(!refresh);
         toast({
@@ -91,9 +102,9 @@ export default function GameDetails() {
           isClosable: true,
         });
       })
-      .catch(() => {
+      .catch((error) => {
         toast({
-          title: "Erro desconhecido",
+          title: error.response.data.message,
           description: "Verifique as informações e tente novamente",
           status: "error",
           duration: 2000,
@@ -121,8 +132,9 @@ export default function GameDetails() {
             <Flex alignItems={"center"}>
               <Image
                 width={"100px"}
+                height={"100px"}
                 src={gameUrl}
-                alt="Green double couch with wooden legs"
+                alt="foto jogo"
                 borderRadius="lg"
               />
               <Heading mb={3} ml={5}>
@@ -147,58 +159,62 @@ export default function GameDetails() {
                 })}
               </Tbody>
             </Table>
-            <form onSubmit={handleSubmit} autoComplete="nope">
-              <HStack m={"30px"} mt={"70px"}>
-                <FormControl isRequired width={"70%"}>
-                  <FormLabel htmlFor="titulo">Adicionar Avaliação</FormLabel>
-                  <Input
-                    max-length="300"
-                    borderColor="darkgrey"
-                    border="2px"
-                    type="text"
-                    value={review.texto}
-                    onChange={(event) => {
-                      saveInputText(event?.target.value);
-                    }}
-                  />
-                </FormControl>
-                <FormControl isRequired width={"30%"}>
-                  <FormLabel htmlFor="titulo">Adicionar Review</FormLabel>
-                  <NumberInput defaultValue={0} min={0} max={10}>
-                    <NumberInputField
+            {logado ? (
+              <form onSubmit={handleSubmit} autoComplete="nope">
+                <HStack m={"30px"} mt={"70px"}>
+                  <FormControl isRequired width={"70%"}>
+                    <FormLabel htmlFor="titulo">Adicionar Avaliação</FormLabel>
+                    <Input
                       max-length="300"
                       borderColor="darkgrey"
                       border="2px"
                       type="text"
-                      value={review.nota}
+                      value={review.texto}
                       onChange={(event) => {
-                        saveInputGrade(event?.target.value);
+                        saveInputText(event?.target.value);
                       }}
                     />
-                    <NumberInputStepper>
-                      <NumberIncrementStepper />
-                      <NumberDecrementStepper />
-                    </NumberInputStepper>
-                  </NumberInput>
-                </FormControl>
-              </HStack>
-              <Flex mx={"40px"} justifyContent={"end"}>
-                <Button
-                  colorScheme="green"
-                  w={"350px"}
-                  mr={3}
-                  type="submit"
-                  value="submit"
-                  id="saveOrder"
-                >
-                  {isWaiting ? (
-                    <Spinner color="white.500" />
-                  ) : (
-                    <div> Salvar</div>
-                  )}
-                </Button>
-              </Flex>
-            </form>
+                  </FormControl>
+                  <FormControl isRequired width={"30%"}>
+                    <FormLabel htmlFor="titulo">Adicionar Review</FormLabel>
+                    <NumberInput defaultValue={0} min={0} max={10}>
+                      <NumberInputField
+                        max-length="300"
+                        borderColor="darkgrey"
+                        border="2px"
+                        type="text"
+                        value={review.nota}
+                        onChange={(event) => {
+                          saveInputGrade(event?.target.value);
+                        }}
+                      />
+                      <NumberInputStepper>
+                        <NumberIncrementStepper />
+                        <NumberDecrementStepper />
+                      </NumberInputStepper>
+                    </NumberInput>
+                  </FormControl>
+                </HStack>
+                <Flex mx={"40px"} justifyContent={"end"}>
+                  <Button
+                    colorScheme="green"
+                    w={"350px"}
+                    mr={3}
+                    type="submit"
+                    value="submit"
+                    id="saveOrder"
+                  >
+                    {isWaiting ? (
+                      <Spinner color="white.500" />
+                    ) : (
+                      <div> Salvar</div>
+                    )}
+                  </Button>
+                </Flex>
+              </form>
+            ) : (
+              ""
+            )}
           </>
         ) : (
           <Stack mt="50px">

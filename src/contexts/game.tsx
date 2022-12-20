@@ -38,7 +38,7 @@ export function GameProvider({ children }: GameProviderProps) {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    axios.get("http://localhost:3000/games").then((response) => {
+    axios.get("http://backend-trabalho-com222.onrender.com/games").then((response) => {
       setGames(response.data);
       setIsLoading(true);
     });
