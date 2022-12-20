@@ -56,7 +56,7 @@ export default function GameDetails() {
   useEffect(() => {
     setIsLoading(false);
     axios
-      .get("http://localhost:3000/review", { params: { titulo: gameName } })
+      .get("https://backend-trabalho-com222.onrender.com/user/review", { params: { titulo: gameName } })
       .then((response) => {
         setReviews(response.data);
         setIsLoading(true);
@@ -71,7 +71,7 @@ export default function GameDetails() {
     event.preventDefault();
     axios
       .post(
-        "http://localhost:3000/review",
+        "https://backend-trabalho-com222.onrender.com/user/review",
         {
           titulo: gameName,
           nota: review.nota,

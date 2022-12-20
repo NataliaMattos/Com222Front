@@ -47,7 +47,7 @@ function CreateGame() {
 
     axios
       .post(
-        "http://localhost:3000/games",
+        "https://backend-trabalho-com222.onrender.com/user/games",
         {
           titulo: game.titulo,
           resumo: game.resumo,

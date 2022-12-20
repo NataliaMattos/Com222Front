@@ -35,7 +35,7 @@ function CadastrarUsuario() {
     setIsWaiting(true);
     event.preventDefault();
     axios
-      .post("http://localhost:3000/user", {
+      .post("https://backend-trabalho-com222.onrender.com/user/user", {
         name: user.name,
         email: user.email,
         password: user.password,
