@@ -81,7 +81,7 @@ function SearchBar() {
     } else {
       axios
         .get(
-          `http://localhost:3000/games/?${selectedItem.param}=${selectedItem.tituloPuro}`
+          `http://localhost:3000/games/pesquisa/?${selectedItem.param}=${selectedItem.tituloPuro}`
         )
         .then((response) => {
           setGamesFilter(response.data);
