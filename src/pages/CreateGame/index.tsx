@@ -178,6 +178,7 @@ function CreateGame() {
                   <option value="estrategia">estratégia</option>
                   <option value="RPG">RPG</option>
                   <option value="esporte">esporte</option>
+                  <option value="simulacao">simulação</option>
                 </Select>
               </FormControl>
               <FormControl isRequired>
@@ -195,21 +196,27 @@ function CreateGame() {
               </FormControl>
               <FormControl isRequired>
                 <FormLabel htmlFor="name">console</FormLabel>
-                <Input
+                
+                <Select
+                  placeholder="Select option"
                   max-length="300"
                   borderColor="darkgrey"
                   border="2px"
-                  type="text"
                   value={game.console}
                   onChange={(event) => {
                     saveInputConsole(event?.target.value);
                   }}
-                />
+                >
+                  <option value="xbox">Xbox</option>
+                  <option value="playstation">Playstation</option>
+                  <option value="switch">Switch</option>
+                  <option value="pc">PC</option>
+                </Select>
               </FormControl>
             </Box>
             <HStack>
               <FormControl as="fieldset" isRequired>
-                <FormLabel as="legend">Foto</FormLabel>
+                <FormLabel as="legend">Foto - Apenas JPEG</FormLabel>
                 <Input
                   multiple
                   type="file"
